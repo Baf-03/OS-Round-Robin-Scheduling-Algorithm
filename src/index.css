@@ -79,6 +79,7 @@ label {
   overflow: scroll;
   margin: auto;
 
+  color:white
 
 }
 
@@ -90,6 +91,8 @@ label {
   word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
+  color:white
+
 }
 
 .process-table th {
@@ -100,10 +103,12 @@ label {
 
 .process-table tr.running {
   background-color: #50fa7b;
+  color: black;
 }
 
 .process-table tr.completed {
   background-color: #ffb86c;
+  color:black
 }
 
 .time-elapsed {
