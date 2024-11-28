@@ -198,36 +198,38 @@ const RoundRobinScheduler = () => {
         <button className="start-btn" onClick={startScheduling}>Start Scheduling</button>
       </div>
 
-      <table className="process-table">
-        <thead>
-          <tr>
-            <th>Process ID</th>
-            <th>Arrival Time</th>
-            <th>Execution Time</th>
-            <th>Remaining Time</th>
-            <th>Waiting Time</th>
-            <th>Turnaround Time</th>
-            <th>IR (Instruction)</th>
-            <th>PC (Program Counter)</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {processes.map((process) => (
-            <tr key={process.id} className={process.state.toLowerCase()}>
-              <td>{process.id}</td>
-              <td>{process.arrivalTime}</td>
-              <td>{process.executionTime}</td>
-              <td>{process.remainingTime}</td>
-              <td>{process.waitingTime >= 0 ? process.waitingTime : 0}</td>
-              <td>{process.turnaroundTime >= 0 ? process.turnaroundTime : 0}</td>
-              <td>{process.IR}</td>
-              <td>{process.PC}</td>
-              <td>{process.state}</td>
+      <div className="process-table-container">
+        <table className="process-table">
+          <thead>
+            <tr>
+              <th>Process ID</th>
+              <th>Arrival Time</th>
+              <th>Execution Time</th>
+              <th>Remaining Time</th>
+              <th>Waiting Time</th>
+              <th>Turnaround Time</th>
+              <th>IR (Instruction)</th>
+              <th>PC (Program Counter)</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {processes.map((process) => (
+              <tr key={process.id} className={process.state.toLowerCase()}>
+                <td>{process.id}</td>
+                <td>{process.arrivalTime}</td>
+                <td>{process.executionTime}</td>
+                <td>{process.remainingTime}</td>
+                <td>{process.waitingTime >= 0 ? process.waitingTime : 0}</td>
+                <td>{process.turnaroundTime >= 0 ? process.turnaroundTime : 0}</td>
+                <td>{process.IR}</td>
+                <td>{process.PC}</td>
+                <td>{process.state}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="time-elapsed">
         <span>Time Elapsed: {timeElapsed}</span>
