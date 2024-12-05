@@ -1,3 +1,4 @@
+/* General styling for the body */
 body {
   font-family: Arial, sans-serif;
   background-color: #2e3b4e;
@@ -61,12 +62,13 @@ body {
 
 .process-table-container {
   margin-top: 30px;
-  overflow-x: auto;
+  overflow-x: auto;  /* Make the table scrollable horizontally */
 }
 
 .process-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px; /* Set a min-width to make sure it's readable */
 }
 
 .process-table th, .process-table td {
@@ -83,6 +85,7 @@ body {
   background-color: #282a36;
 }
 
+/* Styling for iteration cards */
 .iteration-card {
   background-color: #44475a;
   padding: 15px;
@@ -90,10 +93,16 @@ body {
   border-radius: 8px;
 }
 
+/* Add a wrapper to the iteration table for scrollable behavior */
+.iteration-table-wrapper {
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
 .iteration-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  min-width: 800px; /* Ensure that tables have a minimum width */
 }
 
 .iteration-table th, .iteration-table td {
@@ -134,21 +143,30 @@ body {
   color: black;
 }
 
-/* General styling for iteration cards */
-.iteration-card {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #44475a;
-  border-radius: 8px;
+/* Media Queries to handle responsiveness on smaller screens */
+@media (max-width: 768px) {
+  .process-table-container, .iteration-table-wrapper {
+    overflow-x: auto;  /* Enable horizontal scrolling */
+  }
+
+  .process-table, .iteration-table {
+    min-width: 600px; /* Reduce min-width for tablets */
+  }
 }
 
-.iteration-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+@media (max-width: 480px) {
+  .process-table-container, .iteration-table-wrapper {
+    overflow-x: auto;  /* Enable horizontal scrolling */
+  }
 
-.iteration-table th, .iteration-table td {
-  padding: 8px;
-  text-align: center;
-  border: 1px solid #44475a;
+  .process-table, .iteration-table {
+    min-width: 100%;  /* Ensure the table takes up full width */
+    width: 100%;      /* Ensure it's responsive on mobile */
+  }
+
+  .process-table th, .process-table td,
+  .iteration-table th, .iteration-table td {
+    padding: 5px; /* Adjust padding for smaller screens */
+    font-size: 0.8rem; /* Smaller font size for mobile */
+  }
 }
