@@ -1,186 +1,154 @@
-/* App.css */
 body {
-  background-color: #282a36;
-  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #2e3b4e;
+  color: white;
+  margin: 0;
+  padding: 0;
 }
 
+.scheduler-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
 .header {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
   text-align: center;
   color: #ffb86c;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .input-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 30px;
-  width: 80%;
-  margin: auto;
+  gap: 15px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
 }
 
-label {
-  font-weight: 600;
-  color: #a6accd;
+.input-group label {
+  font-size: 1rem;
+  margin-bottom: 5px;
 }
 
 .input-field {
-  padding: 12px;
+  padding: 8px;
   background-color: #44475a;
-  color: #f8f8f2;
-  border: 1px solid #44475a;
-  border-radius: 6px;
-  font-size: 16px;
-  width: 100%;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #ffb86c;
+  border: 1px solid #ffb86c;
+  color: white;
+  font-size: 1rem;
+  border-radius: 4px;
 }
 
 .start-btn {
-  padding: 12px 20px;
-  background-color: #50fa7b;
-  color: white;
+  background-color: #ffb86c;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s ease;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: black;
 }
 
 .start-btn:hover {
-  background-color: #8be9fd;
-  transform: translateY(-2px);
+  background-color: #ff8e3c;
 }
 
-.start-btn:active {
-  transform: translateY(2px);
-}
-
-/* Table Styles */
 .process-table-container {
-  margin-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 30px;
+  overflow-x: auto;
 }
 
 .process-table {
-  width: 80%;
+  width: 100%;
   border-collapse: collapse;
-  overflow: scroll;
-  margin: auto;
-
-  color:white
-
 }
 
-.process-table th,
-.process-table td {
-  padding: 12px;
+.process-table th, .process-table td {
+  padding: 8px;
   text-align: center;
   border: 1px solid #44475a;
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color:white
-
 }
 
 .process-table th {
   background-color: #44475a;
-  color: #f8f8f2;
-  font-size: 14px;
 }
 
-.process-table tr.running {
-  background-color: #50fa7b;
-  color: black;
+.process-table td {
+  background-color: #282a36;
 }
 
-.process-table tr.completed {
-  background-color: #ffb86c;
-  color:black
+.iteration-card {
+  background-color: #44475a;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.iteration-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.iteration-table th, .iteration-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #44475a;
+}
+
+.iteration-table th {
+  background-color: #44475a;
+}
+
+.iteration-table td {
+  background-color: #282a36;
 }
 
 .time-elapsed {
-  font-weight: bold;
-  color: #ffb86c;
   text-align: center;
   margin-top: 20px;
+  font-size: 1.2rem;
 }
 
-.gantt-chart {
-  position: relative;
-  margin-top: 40px;
-  height: 60px;
-  background-color: #282a36;
-  border-top: 2px solid #ffb86c;
+/* Add these styles for row highlighting in the live simulation table */
+.running-row {
+  background-color: #50fa7b;
+  color: red;
 }
 
-.gantt-block {
-  height: 30px;
-  position: absolute;
-  line-height: 30px;
+.completed-row {
+  background-color: #ffb86c;
+  color: rgb(13, 228, 13);
+}
+
+/* Highlight the running process in the iteration cards */
+.highlight {
+  background-color: #ff79c6 !important;
+  fill: #ff79c6;
+  color: black;
+}
+
+/* General styling for iteration cards */
+.iteration-card {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #44475a;
+  border-radius: 8px;
+}
+
+.iteration-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.iteration-table th, .iteration-table td {
+  padding: 8px;
   text-align: center;
-  color: white;
-  border-radius: 5px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .scheduler-container {
-    padding: 15px;
-    margin: 20px;
-  }
-
-  .input-container {
-    gap: 15px;
-  }
-
-  .input-field {
-    width: 100%; /* Make input fields take full width */
-    padding: 10px;
-  }
-
-  .header {
-    font-size: 2rem;
-  }
-
-  .process-table th,
-  .process-table td {
-    padding: 10px;
-    font-size: 12px; /* Smaller font size for mobile */
-  }
-
-  .start-btn {
-    padding: 10px 15px;
-  }
-
-  .process-table-container {
-    overflow-x: auto; /* Enable horizontal scroll for table */
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-@media (max-width: 480px) {
-  .input-group {
-    gap: 10px;
-  }
-
-  .input-field {
-    padding: 10px;
-  }
-
-  .start-btn {
-    padding: 10px 15px;
-  }
+  border: 1px solid #44475a;
 }

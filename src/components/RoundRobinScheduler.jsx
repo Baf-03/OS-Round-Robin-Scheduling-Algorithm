@@ -9,6 +9,7 @@ const RoundRobinScheduler = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [executionTimes, setExecutionTimes] = useState([]);
   const [ganttData, setGanttData] = useState([]);
+  const [processIterations, setProcessIterations] = useState([]);
 
   const handleQuantumChange = (e) => setQuantumSize(Number(e.target.value));
   const handleNumProcessesChange = (e) => {
@@ -23,6 +24,11 @@ const RoundRobinScheduler = () => {
   };
 
   const startScheduling = () => {
+    setTimeElapsed(0);
+    setQueue([]);
+    setGanttData([]);
+    setProcessIterations([]);
+
     const initialProcesses = [];
     for (let i = 0; i < numProcesses; i++) {
       initialProcesses.push({
@@ -35,7 +41,7 @@ const RoundRobinScheduler = () => {
         state: 'Waiting',
         startTime: null,
         completionTime: null,
-        IR: 'LOAD', // Initial instruction (dummy)
+        IR: 'LOAD',
         PC: 0,
       });
     }
@@ -43,7 +49,6 @@ const RoundRobinScheduler = () => {
     setProcesses(initialProcesses);
     setQueue(initialProcesses);
     setIsRunning(true);
-    setGanttData([]);
   };
 
   useEffect(() => {
@@ -55,11 +60,12 @@ const RoundRobinScheduler = () => {
       const updatedProcesses = [...processes];
       const updatedQueue = [...queue];
       const updatedGanttData = [...ganttData];
+      let iterationState = [];
 
       if (updatedQueue.length > 0) {
         const currentProcess = updatedQueue.shift();
-
         currentProcess.state = 'Running';
+
         updatedGanttData.push({
           processId: currentProcess.id,
           start: timeElapsed,
@@ -67,10 +73,7 @@ const RoundRobinScheduler = () => {
           state: 'Running',
         });
 
-        // Update IR (Instruction Register) with a new operation
-        currentProcess.IR = currentProcess.IR === 'ADD' ? 'SUB' : 'ADD'; // Toggle between ADD and SUB for demonstration
-
-        // Update PC (Program Counter)
+        currentProcess.IR = currentProcess.IR === 'ADD' ? 'SUB' : 'ADD';
         currentProcess.PC += quantumSize;
 
         setTimeout(() => {
@@ -101,9 +104,20 @@ const RoundRobinScheduler = () => {
           }
 
           updatedProcesses[currentProcess.id.slice(1) - 1] = currentProcess;
+
+          iterationState = updatedProcesses.map((process) => ({
+            id: process.id,
+            state: process.state,
+            remainingTime: process.remainingTime,
+            PC: process.PC,
+            IR: process.IR,
+          }));
+
           setQueue(updatedQueue);
           setProcesses(updatedProcesses);
           setGanttData(updatedGanttData);
+
+          setProcessIterations((prevIterations) => [...prevIterations, iterationState]);
 
           if (updatedQueue.length === 0 && updatedProcesses.every((p) => p.remainingTime === 0)) {
             setIsRunning(false);
@@ -115,40 +129,37 @@ const RoundRobinScheduler = () => {
     return () => clearInterval(interval);
   }, [isRunning, timeElapsed, processes, queue, quantumSize, ganttData]);
 
-  const renderGanttChart = () => {
-    const ganttBlocks = [];
-    let lastEnd = 0;
-
-    ganttData.forEach((entry, index) => {
-      const width = (entry.end - entry.start) * 20;
-      const color = entry.state === 'Running' ? '#50fa7b' : entry.state === 'Halted' ? '#ffb86c' : '#f8f8f2';
-      ganttBlocks.push(
-        <div
-          key={index}
-          style={{
-            position: 'absolute',
-            left: entry.start * 20,
-            width: width,
-            height: 30,
-            backgroundColor: color,
-            textAlign: 'center',
-            lineHeight: '30px',
-            color: 'white',
-            borderRadius: '5px',
-            transition: 'all 0.5s ease',
-          }}
-        >
-          {entry.processId}
-        </div>
-      );
-      lastEnd = entry.end;
-    });
-
-    return (
-      <div style={{ position: 'relative', height: '50px', width: '100%', borderTop: '2px solid #f8f8f2', marginTop: '20px' }}>
-        {ganttBlocks}
+  const renderIterations = () => {
+    return processIterations.map((iteration, index) => (
+      <div key={index} className="iteration-card">
+        <h3>Iteration {index + 1}</h3>
+        <table className="iteration-table">
+          <thead>
+            <tr>
+              <th>Process ID</th>
+              <th>State</th>
+              <th>Remaining Time</th>
+              <th>Program Counter (PC)</th>
+              <th>Instruction Register (IR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {iteration.map((processState) => (
+              <tr
+                key={processState.id}
+                className={processState.state === 'Running' ? 'highlight' : ''}
+              >
+                <td>{processState.id}</td>
+                <td>{processState.state}</td>
+                <td>{processState.remainingTime}</td>
+                <td>{processState.PC}</td>
+                <td>{processState.IR}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
+    ));
   };
 
   return (
@@ -215,7 +226,16 @@ const RoundRobinScheduler = () => {
           </thead>
           <tbody>
             {processes.map((process) => (
-              <tr key={process.id} className={process.state.toLowerCase()}>
+              <tr
+                key={process.id}
+                className={
+                  process.state === 'Running'
+                    ? 'running-row'
+                    : process.state === 'Completed'
+                    ? 'completed-row'
+                    : ''
+                }
+              >
                 <td>{process.id}</td>
                 <td>{process.arrivalTime}</td>
                 <td>{process.executionTime}</td>
@@ -235,7 +255,7 @@ const RoundRobinScheduler = () => {
         <span>Time Elapsed: {timeElapsed}</span>
       </div>
 
-      {renderGanttChart()}
+      {renderIterations()}
     </div>
   );
 };
